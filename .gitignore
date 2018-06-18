@@ -1,2 +1,5 @@
 # Apple Desktop Services Store
+#
 .DS_Store
+credentials.py
+__pycache__
