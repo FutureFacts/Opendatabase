@@ -1,5 +1,8 @@
 # Apple Desktop Services Store
+#
 .DS_Store
 
-# Credentials for testing purposes
-credentials.*
+# Credentials and caching
+credentials.py
+__pycache__
+
