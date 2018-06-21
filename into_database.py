@@ -1,4 +1,4 @@
-import cbsodata
+mport cbsodata
 import pandas as pd
 import sqlalchemy
 from credentials import login, database
