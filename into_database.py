@@ -1,4 +1,4 @@
-mport cbsodata
+import cbsodata
 import pandas as pd
 import sqlalchemy
 from credentials import login, database
@@ -16,7 +16,8 @@ DB = database['DB']
 USER = login['user']
 PASSWORD = login['password']
 
-connection = sqlalchemy.create_engine('mysql+mysqlconnector://{0}:{1}@{2}/{3}'.
+connection = sqlalchemy.create_engine(
+        'mssql+pyodbc://{0}:{1}@{2}/{3}?driver=SQL+Server+Native+Client+11.0'.
                                            format(USER, PASSWORD,
                                                   HOST, DB))
 
