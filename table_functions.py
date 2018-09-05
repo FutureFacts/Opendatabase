@@ -3,7 +3,8 @@ import cbsodata
 
 def translator(string):
     exceptions = ['Appartement','VrijstaandeWoning','TweeOnderEenKapWoning',
-                 'Hoekwoning','Tussenwoning','Huurwoning','EigenWoning']
+                 'Hoekwoning','Tussenwoning','Huurwoning','EigenWoning',
+                 'ClientenMetVoorzieningen','HuishoudensMetVoorzieningen']
     for x in exceptions:
         if x in string:
             return string
@@ -72,7 +73,7 @@ def process_data_wmo(CBS_codering):
 def process_data_sociale_voorzieningen(CBS_codering):
     data = cbsodata.get_data(CBS_codering)
     collecting = {}
-    for row in data:
+    for row in reversed(data):
         if len(row['Perioden']) != 4 or len(row['Codering_3'].rstrip()) == 0:
                 continue
         identifier = int('1' + row['Codering_3'][2:])
