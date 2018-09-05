@@ -19,7 +19,7 @@ def process_data_buurten(CBS_codering):
     collecting = {}
     for row in reversed(data):
         collecting[int('1'+ row['Codering_3'][2:])] = row
-        row['Perioden'] = 2015
+        row['Perioden'] = 'TO_FIXX_STILL'
         row['Gemeentenaam_1'] = row['Gemeentenaam_1'].strip()
         row['SoortRegio_2'] = row['SoortRegio_2'].strip()
     df = pd.DataFrame.from_dict(collecting, orient='index', dtype=None)

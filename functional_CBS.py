@@ -2,11 +2,12 @@ import cbsodata
 import pandas as pd
 import sqlalchemy
 from credentials import login,database
-from table_functions import (process_data_buurten,
+from process_functions.table_functions import (process_data_buurten,
                              process_data_jongeren, 
                              process_data_wmo,
                              process_data_sociale_voorzieningen,
                              process_data_gezondheidsmonitor)
+from process_functions.combine import list_combine
 from databronnen import cijfers_buurten_en_wijken
 
 ## HERE THE CREDENTIALS ARE ASSIGNED 
@@ -29,4 +30,14 @@ for name,(identifier,function) in cijfers_buurten_en_wijken.items():
     conn = engine.connect()
     data.to_sql(con= conn, name=name, if_exists='replace')    
     conn.close()
+
+Buurtenenwijken = {name:df for name,df in dataset.items() if
+                   'BuurtenenWijken' in name}
+print(Buurtenenwijken.keys())
+most_recent,source = list_combine(Buurtenenwijken)
+print(source)
+conn = engine.connect()
+most_recent.to_sql(con= conn, name='BuurtenenWijken_most_recent', if_exists='replace')
+source.to_sql(con= conn, name='source_BuurtenenWijken_most_recent', if_exists='replace')
+
 

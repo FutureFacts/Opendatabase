@@ -1,4 +1,4 @@
-from table_functions import (process_data_buurten,
+from process_functions.table_functions import (process_data_buurten,
                              process_data_jongeren, 
                              process_data_wmo,
                              process_data_sociale_voorzieningen,
