@@ -3,9 +3,24 @@ from process_functions.table_functions import (process_data_buurten,
                              process_data_wmo,
                              process_data_sociale_voorzieningen,
                              process_data_gezondheidsmonitor)
+from process_functions.age_functions import (read_population_data_asc,
+                                             read_population_data_xlsx
+                                            )
 
 
-cijfers_buurten_en_wijken = {'BuurtenenWijken2015':('83220NED',process_data_buurten),
+cijfers_buurten_en_wijken = {'leeftijd_2015':('./age_data/age_data_2015.xlsx',
+                                               read_population_data_xlsx
+                                             ),
+                             'leeftijd_2016':('./age_data/age_data_2016.xlsx',
+                                               read_population_data_xlsx
+                                             ),
+                             'leeftijd_2017':('./age_data/age_data_2017.xlsx',
+                                               read_population_data_xlsx
+                                             ),
+                             'Leeftijd_2018':('./age_data/age_data_2018.asc',
+                                               read_population_data_asc
+                                             ),
+                             'BuurtenenWijken2015':('83220NED',process_data_buurten),
                              'BuurtenenWijken2016':('83487NED',process_data_buurten),
                              'BuurtenenWijken2017':('83765NED',process_data_buurten),
                              'BuurtenenWijken2018':('84286NED',process_data_buurten),

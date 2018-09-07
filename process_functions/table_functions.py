@@ -14,19 +14,20 @@ def translator(string):
     else:
         return '_'.join(split[:-1])
 
-def process_data_buurten(CBS_codering):
+def process_data_buurten(CBS_codering,name):
     data = cbsodata.get_data(CBS_codering)
     collecting = {}
+    year = int(''.join([x for x in name if x.isdigit()]))
     for row in reversed(data):
         collecting[int('1'+ row['Codering_3'][2:])] = row
-        row['Perioden'] = 'TO_FIXX_STILL'
+        row['Perioden'] = year
         row['Gemeentenaam_1'] = row['Gemeentenaam_1'].strip()
         row['SoortRegio_2'] = row['SoortRegio_2'].strip()
     df = pd.DataFrame.from_dict(collecting, orient='index', dtype=None)
     df.rename(columns = translator,inplace = True) 
     return df
 
-def process_data_jongeren(CBS_codering):
+def process_data_jongeren(CBS_codering,name):
     data = cbsodata.get_data(CBS_codering)
     collecting = {}
     for row in data:
@@ -50,7 +51,7 @@ def process_data_jongeren(CBS_codering):
     df.rename(columns = translator,inplace = True)
     return df    
 
-def process_data_wmo(CBS_codering):
+def process_data_wmo(CBS_codering,name):
     data = cbsodata.get_data(CBS_codering)
     collecting = {}
     for row in reversed(data):
@@ -70,7 +71,7 @@ def process_data_wmo(CBS_codering):
     df.rename(columns = translator,inplace = True)
     return df
 
-def process_data_sociale_voorzieningen(CBS_codering):
+def process_data_sociale_voorzieningen(CBS_codering,name):
     data = cbsodata.get_data(CBS_codering)
     collecting = {}
     for row in reversed(data):
@@ -82,7 +83,7 @@ def process_data_sociale_voorzieningen(CBS_codering):
     df.rename(columns = translator,inplace = True)
     return df
 
-def process_data_gezondheidsmonitor(CBS_codering):
+def process_data_gezondheidsmonitor(CBS_codering,name):
     data = cbsodata.get_data(CBS_codering)
     buurten2016 = cbsodata.get_data('83487NED')
     translate2016 = {}
