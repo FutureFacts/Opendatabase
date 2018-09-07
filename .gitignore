@@ -6,3 +6,7 @@
 credentials.py
 __pycache__
 
+## .ipyn stuff and testscripts
+.ipynb_checkpoints/
+testscriptsjan/
+
