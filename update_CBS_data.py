@@ -28,7 +28,6 @@ for name,(identifier,function) in cijfers_buurten_en_wijken.items():
     data = function(identifier,name)
     dataset[name] = data
     conn = engine.connect()
-    print(data)
     data.to_sql(con= conn, name=name, if_exists='replace')    
     conn.close()
 

@@ -4,9 +4,10 @@ def combine(original,older,source = {}):
     if len(source) == 0:
         source = {x:original['Perioden'].iloc[0] for x in original.columns}
 
-
-    unchanged = original[original['IndelingswijzigingWijkenEnBuurten'] == '1'].copy()
-    changed = original[original['IndelingswijzigingWijkenEnBuurten'] != '1'].copy()
+    unchanged = \
+        original[original['IndelingswijzigingWijkenEnBuurten'].isin(['1','.'])].copy()
+    changed = \
+        original[~original['IndelingswijzigingWijkenEnBuurten'].isin(['1','.'])].copy()
 
     unchanged_trans = {x: x + 'recent' for x in unchanged.columns} 
     older_trans = {x: x + 'older' for x in older.columns} 
@@ -15,7 +16,7 @@ def combine(original,older,source = {}):
 
     merged = unchanged.merge(
         older,
-        #how = 'left',
+        how = 'left',
         left_index=True,
         right_index=True,
         suffixes = ('recent','older')

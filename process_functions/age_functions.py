@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def add_population(data,codering,CBS_code,population,age):
-    data[codering]['Codering_3'] = CBS_code
+    data[codering]['Codering'] = CBS_code
     data[codering]['totaal'] += population
     if age < 18:
         data[codering]['0tm17'] += population
@@ -59,15 +59,15 @@ def read_population_data_xlsx(source,name):
     for x in data_buurtenwijken:
         wijk = x['WijkenEnBuurten'].strip()
         gemeente = x['Gemeentenaam_1'].strip()
-        if x['Codering_3'][0:2] == 'WK':
-            wijken[(gemeente,wijk)] = x['Codering_3']
-            codering[x['Codering_3']] = (gemeente,wijk)
+        if x['Codering'][0:2] == 'WK':
+            wijken[(gemeente,wijk)] = x['Codering']
+            codering[x['Codering']] = (gemeente,wijk)
 
     ##HIER LADEN WE DE BEWONERSDATA 2018 IN DE DATABASE, NOG IN SQL SERVER ZETTEN
     ## This file needs the document  "kale bron 2015.xlsx" to be in the same folder to run.
 
     population_data = pd.read_excel(source)
-    population_data['Codering_3'] = population_data.apply(lambda x: wijken[(x['GemeenteGBA'],x['GWBnaam'+str(year)].strip())],axis =1)
+    population_data['Codering'] = population_data.apply(lambda x: wijken[(x['GemeenteGBA'],x['GWBnaam'+str(year)].strip())],axis =1)
     population_data['0tm17'] = 0
     population_data['18tm65'] = 0
     population_data['66tm74'] = 0
@@ -101,18 +101,18 @@ def read_population_data_xlsx(source,name):
 
     population_data = population_data.apply(optellen, axis =1)
     population_data = population_data[['totaal','0tm17','18tm65','66tm74','75tm84','85','20tm65','15tm75','Codering_3']].groupby(['Codering_3']).sum()
-    population_data['Codering_3'] = population_data.index
+    population_data['Codering'] = population_data.index
     population_data = population_data.reset_index(drop=True)
     population_data = population_data[1:]
-    population_data['Gemeentecode'] = population_data['Codering_3'].apply(lambda x:'GM'+  x[2:6])
+    population_data['Gemeentecode'] = population_data['Codering'].apply(lambda x:'GM'+  x[2:6])
     NL = population_data.sum()
-    NL['Codering_3'] = 'NL00'
+    NL['Codering'] = 'NL00'
     NL['Gemeentecode'] = 'NL00'
     GM = population_data.groupby('Gemeentecode').sum()
-    GM['Codering_3'] = GM.index
+    GM['Codering'] = GM.index
     GM = GM.reset_index(drop=True)
     result = pd.concat([population_data,GM],ignore_index = True)
     result = result.append(NL,ignore_index = True)
-    result.index = result['Codering_3'].map(lambda x: int('1' + x[2:]))
+    result.index = result['Codering'].map(lambda x: int('1' + x[2:]))
     result = result.rename_axis('codering')
     return result

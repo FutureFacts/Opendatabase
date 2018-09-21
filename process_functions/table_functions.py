@@ -1,6 +1,6 @@
 import pandas as pd
 import cbsodata
-
+from process_functions.absolute_numbers.buurtenenwijken import absolute_values_BeW
 def translator(string):
     exceptions = ['Appartement','VrijstaandeWoning','TweeOnderEenKapWoning',
                  'Hoekwoning','Tussenwoning','Huurwoning','EigenWoning',
@@ -25,6 +25,7 @@ def process_data_buurten(CBS_codering,name):
         row['SoortRegio_2'] = row['SoortRegio_2'].strip()
     df = pd.DataFrame.from_dict(collecting, orient='index', dtype=None)
     df.rename(columns = translator,inplace = True) 
+    df = absolute_values_BeW(df)
     return df
 
 def process_data_jongeren(CBS_codering,name):
