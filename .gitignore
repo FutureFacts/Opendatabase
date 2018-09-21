@@ -1,7 +1,7 @@
 # Apple Desktop Services Store
 #
 .DS_Store
-
+To_do_lijst.xlsx
 # Credentials and caching
 credentials.py
 __pycache__
@@ -13,4 +13,6 @@ testscriptsjan/
 ## Data files
 age_data/
 ./buurten_vertaling
+
+
 
