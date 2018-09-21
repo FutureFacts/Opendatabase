@@ -10,3 +10,7 @@ __pycache__
 .ipynb_checkpoints/
 testscriptsjan/
 
+## Data files
+./age_data
+./buurten_vertaling
+

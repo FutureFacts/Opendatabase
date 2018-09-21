@@ -18,5 +18,9 @@ database = {
     'DB' : 'name of database'
 }
 
+To read in the bevolkingsdata, one should put the bevolkingsleeftijdsdata in the folder ./age_data with the names as defined in the file databronnen.py
+
+
+
 
 
