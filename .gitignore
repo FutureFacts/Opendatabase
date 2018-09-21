@@ -11,6 +11,6 @@ __pycache__
 testscriptsjan/
 
 ## Data files
-./age_data
+age_data/
 ./buurten_vertaling
 
