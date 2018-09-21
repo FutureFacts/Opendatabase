@@ -20,6 +20,7 @@ database = {
 
 To read in the bevolkingsdata, one should put the bevolkingsleeftijdsdata in the folder ./age_data with the names as defined in the file databronnen.py
 
+To read in updates for how neighborhoods are combined in the MMR, on should add a folder Vertaling_wijken, Below that folder one should add folders for all years, per year one should then add xlsx files containing the details per municipality. 
 
 
 
