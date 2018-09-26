@@ -31,13 +31,21 @@ for name,(identifier,function) in cijfers_buurten_en_wijken.items():
     data.to_sql(con= conn, name=name, if_exists='replace')    
     conn.close()
 
+## CREATE THE MOST RECENT TABLE FOR BUURTEN EN WIJKEN
 Buurtenenwijken = {name:df for name,df in dataset.items() if
                    'BuurtenenWijken' in name}
-print(Buurtenenwijken.keys())
 most_recent,source = list_combine(Buurtenenwijken)
-print(source)
 conn = engine.connect()
 most_recent.to_sql(con= conn, name='BuurtenenWijken_most_recent', if_exists='replace')
 source.to_sql(con= conn, name='source_BuurtenenWijken_most_recent', if_exists='replace')
 
+## FOR THE JOIN STATEMENT
+jongeren_recent = sorted([x for x in cijfers_buurten_en_wijken.keys()
+                   if 'jongeren' in  x])[-1]
+wmo_recent = sorted([x for x in cijfers_buurten_en_wijken.keys()
+                     if 'wmo' in x])[-1]
+sovo_recent = sorted([x for x in cijfers_buurten_en_wijken.keys()
+                     if 'sociale_voorzieningen' in x])[-1]
+leeftijd = sorted([x for x in cijfers_buurten_en_wijken.keys()
+                     if 'leeftijd' in x])[-1]
 

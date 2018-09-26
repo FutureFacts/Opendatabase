@@ -17,7 +17,7 @@ cijfers_buurten_en_wijken = {'leeftijd_2015':('./age_data/age_data_2015.xlsx',
                              'leeftijd_2017':('./age_data/age_data_2017.xlsx',
                                                read_population_data_xlsx
                                              ),
-                             'Leeftijd_2018':('./age_data/age_data_2018.asc',
+                             'leeftijd_2018':('./age_data/age_data_2018.asc',
                                                read_population_data_asc
                                              ),
                              'BuurtenenWijken2015':('83220NED',process_data_buurten),

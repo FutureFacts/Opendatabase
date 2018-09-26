@@ -1,0 +1,134 @@
+CREATE TABLE CBS.combination_temp
+AS SELECT
+### This is all from buurten en Wijken
+trans.MMR_indeling,
+trans.Gemeentenaam, 
+trans.WijkenEnBuurten,
+trans.Codering,
+trans.soort_regio_nieuwe_indeling,
+SUM(BeW.AantalInwoners),
+SUM(BeW.HuishoudensTotaal),
+SUM(BeW.Oppervlakte),
+SUM(BeW.SterfteTotaal) * 1000 / NULLIF(SUM(BeW.AantalInwoners),0) as SterfteRelatief,
+SUM(BeW.AantalInwoners) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as GemiddeldeHuishoudensgrootte ,
+SUM(BeW.AantalInwoners) / NULLIF(SUM(BeW.Oppervlakte),0) as Bevolkingsdichtheid,
+
+#housing
+SUM(BeW.Totale_Woningwaarde) / NULLIF(SUM(BeW.Woningvoorraad),0) as GemiddeldeWoningwaarde  ,
+SUM(BeW.Eengezinswoningen_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageEengezinswoning ,
+SUM(BeW.Meergezinswoning_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageMeergezinswoning ,
+SUM(BeW.Bewoond_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0)  as PercentageBewoond ,
+SUM(BeW.Onbewoond_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageOnbewoond  ,
+SUM(BeW.Koopwoningen_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageKoopwoningen,
+SUM(BeW.Huurwoningen_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageHuurwoningen,
+SUM(BeW.InBezitWoningcorporatie_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageInBezitWoningcorporatie ,
+SUM(BeW.InBezitOverigeVerhuurders_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageInBezitOverigeVerhuurders ,
+SUM(BeW.EigendomOnbekend_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageEigendomOnbekend,
+SUM(BeW.BouwjaarVoor2000_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0)  as PercentageBouwjaarVoor2000 ,
+SUM(BeW.BouwjaarVanaf2000_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageBouwjaarVanaf2000 ,
+
+#Inkomen
+SUM(BeW.inkomen_totaal) / NULLIF(SUM(BeW.AantalInkomensontvangers),0) as GemiddeldInkomenPerInkomensontvanger ,
+SUM(BeW.inkomen_totaal) / NULLIF(SUM(BeW.AantalInwoners),0) as GemiddeldInkomenPerInwoner,
+SUM(BeW.Laagste_inkomen_k40_totaal) / NULLIF(SUM(BeW.AantalInkomensontvangers),0) as Laagste_inkomen_k40_percentage ,
+SUM(BeW.Hoogste_inkomen_k20_totaal) / NULLIF(SUM(BeW.AantalInkomensontvangers),0) as Hoogste_inkomen_k20_percentage ,
+#BeW.AantalInkomensontvangers / BeW.Inwoners1575 as Actieven1575Jaar_percentage,
+SUM(BeW.Laagste_inkomen_k20_totaal_huishoudens) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as Laagste_inkomen_k40_percentage_huishoudens,
+SUM(BeW.Hoogste_inkomen_k20_totaal_huishoudens) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as Hoogste_inkomen_k40_percentage_huishoudens ,
+SUM(BeW.Huishoudens_met_laag_inkomen_totaal) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as Huishoudens_met_laag_inkomen_percentage,
+SUM(BeW.HuishoudensOnderOfRondSociaalminimum_totaal) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as HuishoudensOnderOfRondSociaalminimum_percentage,
+
+#autos
+SUM(BeW.Personenautos_totaal) / NULLIF(SUM(BeW.Oppervlakte),0) as Personen_autos_per_km2 ,
+SUM(BeW.Personenautos_totaal) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as Personen_autos_per_Huishouden, 
+
+##Afstanden voorzieningen,
+SUM(BeW.AfstandTotHuisartsenpraktijk_totaal) / NULLIF(SUM(BeW.AantalInwoners),0) as AfstandTotHuisartsenpraktijk, 
+SUM(BeW.AfstandTotGroteSupermarkt_totaal) / NULLIF(SUM(BeW.AantalInwoners),0) as AfstandTotGroteSupermarkt ,
+SUM(BeW.AfstandTotKinderdagverblijf_totaal) / NULLIF(SUM(BeW.AantalInwoners),0) as AfstandTotKinderdagverblijf, 
+SUM(BeW.AfstandTotSchool_totaal) / NULLIF(SUM(BeW.AantalInwoners),0) as AfstandTotSchool, 
+SUM(BeW.ScholenBinnen3Km_totaal) / NULLIF(SUM(BeW.AantalInwoners),0) as ScholenBinnen3Km,
+
+
+### Now comes the part from jongeren
+SUM(jong.TotaalJongerenMetJeugdzorg) as JongerenMetJeugzorgTotaal,
+SUM(jong.k_0Tot4Jaar) as JongerenMetJeugzorg0tot4jaar,
+SUM(jong.k_4Tot12Jaar) as JongerenMetJeugzorg4tot12jaar,
+SUM(jong.k_12Tot18Jaar) as JongerenMetJeugzorg12tot18jaar,
+SUM(jong.k_18Tot23Jaar) as JongerenMetJeugzorg18tot23jaar,
+SUM(ThuiswonendKindInEenouderGezin) as JzThuiswonendKindInEenouderGezin,
+SUM(ThuiswonendKindInTweeouderGezin) as JzThuiswonendKindInTweeouderGezin,
+SUM(AndereHuishoudens) as JzAndereHuishoudens ,
+SUM(TotaalJeugdzorgtrajecten) as TotaalJeugdzordtrajecten,
+SUM(StabilisatieVanEenCrisissituatie) as StabilisatieVanEenCrisissituatie,
+SUM(Diagnostiek) as Diagnostiek,
+SUM(Begeleiden) as Begeleiden,
+SUM(Behandelen) as Behandelen,
+SUM(GemeentelijkeToegang) as GemeentelijkeToegang,
+SUM(Huisarts) as Huisarts,
+SUM(Jeugdarts) as Jeugdarts,
+SUM(GecertificeerdeInstelling) as GecertificeerdeInstelling,
+SUM(MedischSpecialist) as MedischSpecialist,
+SUM(RechterOfficierVanJustitie) as RechterOfficierVanJustitie,
+SUM(GeenVerwijzer) as GeenVerwijzer,
+SUM(VerwijzerOnbekend) as VerwijzerOnbekend,
+SUM(`Totaal jeugdzorg`) as Totaal_jeugdzorg,
+SUM(`Totaal jeugdhulp`) as Totaal_jeugdhulp,
+SUM(`Totaal jeugdhulp zonder verblijf`) as Totaal_jeugdhulp_zonder_verblijf,
+SUM(`Jeugdhulp met verblijf`) as Jeugdhulp_met_verblijf,
+SUM(Jeugdbescherming) as Jeugdbescherming,
+SUM(Jeugdreclassering) as Jeugdreclassering,
+
+##Leeftijd
+SUM(leeftijd.totaal) as pop_totaal,
+SUM(leeftijd.`0tm17`) as pop0tm17,
+SUM(`15tm75`) as pop15tm75,
+SUM(`18tm65`) as pop18tm65,
+SUM(`20tm65`) as pop20tm65,
+SUM(`66tm74`) as pop66tm74,
+SUM(`75tm84`) as pop75tm84,
+SUM(`85`) as pop85enOuder,
+
+## Sociale voorzieningen
+SUM(SoVo.ClientenMetVoorzieningen_5) as ClientenMetVoorzieningen_5,
+SUM(SoVo.HuishoudensMetVoorzieningen_6) as HuishoudensMetVoorzieningen_6,
+SUM(SoVo.ClientenMetVoorzieningen_7) as ClientenMetVoorzieningen_7,
+SUM(SoVo.HuishoudensMetVoorzieningen_8) as HuishoudensMetVoorzieningen_8,
+
+## WMO
+SUM(WMO.WmoClienten) as WmoClienten,
+SUM(WMO.WmoClientenPer1000Inwoners)/  NULLIF(SUM(leeftijd.totaal),0) * 1000 as WmoClientenPer1000Inwoners,
+SUM(WMO.`Zowel PGB als ZIN`) as Zowel_PGB_als_ZIN,
+SUM(WMO.`Zowel PGB als ZIN`)/ NULLIF(SUM(leeftijd.totaal),0) as Zowel_PGB_als_ZIN_per100Inwoners,
+SUM(WMO.`Uitsluitend Zorg in Natura (ZIN)`) as `Uitsluitend_Zorg_in)Natura_(ZIN)`,
+SUM(WMO.`Uitsluitend Zorg in Natura (ZIN)`) / NULLIF(SUM(leeftijd.totaal),0) * 1000 as `Uitsluitend_Zorg_in_Natura_(ZIN)_per100Inwoners`,
+SUM(WMO.`Uitsluitend PersoonsGebondenBudget (PGB)`) as `Uitsluitend_PersoonsGebondenBudget_(PGB)`,
+SUM(WMO.`Uitsluitend PersoonsGebondenBudget (PGB)`)/ NULLIF(SUM(leeftijd.totaal),0) * 1000 as `Uitsluitend_PersoonsGebondenBudget_(PGB)_per100Inwoners`,
+SUM(WMO.Totaal) as wmo_kosten_totaal,
+SUM(WMO.Totaal)/NULLIF(SUM(leeftijd.totaal),0)* 1000 as WMOTotaal_per100Inwoners
+FROM
+CBS.BuurtenenWijken_most_recent as BeW
+INNER JOIN CBS.{vertaal_recent} as trans
+ON 
+BeW.Codering=trans.Codering
+LEFT JOIN 
+CBS.{jongeren_recent} as jong
+ON
+BeW.Codering = jong.Codering
+LEFT JOIN 
+CBS.{leeftijd_recent} as leeftijd
+ON
+BeW.Codering = leeftijd.Codering_3
+LEFT JOIN 
+CBS.{sovo_recent} as SoVo
+ON
+BeW.Codering = SoVo.Codering
+LEFT JOIN 
+CBS.{wmo_recent} as WMO
+ON
+BeW.Codering = WMO.Codering
+GROUP BY trans.MMR_indeling;
+DROP TABLE CBS.combination;
+ALTER TABLE CBS.combination_temp
+  RENAME TO CBS.combination
+
