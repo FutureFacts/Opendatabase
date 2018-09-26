@@ -27,6 +27,7 @@ for name,(identifier,function) in cijfers_buurten_en_wijken.items():
     print('downloading data buurten en wijken from {}'.format(name))
     data = function(identifier,name)
     dataset[name] = data
+    print(data.head(2))
     conn = engine.connect()
     data.to_sql(con= conn, name=name, if_exists='replace')    
     conn.close()

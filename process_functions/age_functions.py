@@ -42,6 +42,7 @@ def read_population_data_asc(source,name):
             buurten = add_population(buurten,int(codering[0:5]),gemeentecode,aantal_bewoners,leeftijd)
             buurten = add_population(buurten,100,'NL00',aantal_bewoners,leeftijd)
     bevolkingsdata = pd.DataFrame.from_dict(buurten, orient='index', dtype=None)
+    #bevolkingsdata.rename(columns = {'Codering_3':'Codering'}, inplace = True)
     return bevolkingsdata
 
 source_translator = {2015:'83220NED',
@@ -59,9 +60,9 @@ def read_population_data_xlsx(source,name):
     for x in data_buurtenwijken:
         wijk = x['WijkenEnBuurten'].strip()
         gemeente = x['Gemeentenaam_1'].strip()
-        if x['Codering'][0:2] == 'WK':
-            wijken[(gemeente,wijk)] = x['Codering']
-            codering[x['Codering']] = (gemeente,wijk)
+        if x['Codering_3'][0:2] == 'WK':
+            wijken[(gemeente,wijk)] = x['Codering_3']
+            codering[x['Codering_3']] = (gemeente,wijk)
 
     ##HIER LADEN WE DE BEWONERSDATA 2018 IN DE DATABASE, NOG IN SQL SERVER ZETTEN
     ## This file needs the document  "kale bron 2015.xlsx" to be in the same folder to run.
@@ -100,7 +101,7 @@ def read_population_data_xlsx(source,name):
         return wijk
 
     population_data = population_data.apply(optellen, axis =1)
-    population_data = population_data[['totaal','0tm17','18tm65','66tm74','75tm84','85','20tm65','15tm75','Codering_3']].groupby(['Codering_3']).sum()
+    population_data = population_data[['totaal','0tm17','18tm65','66tm74','75tm84','85','20tm65','15tm75','Codering']].groupby(['Codering']).sum()
     population_data['Codering'] = population_data.index
     population_data = population_data.reset_index(drop=True)
     population_data = population_data[1:]
@@ -113,6 +114,7 @@ def read_population_data_xlsx(source,name):
     GM = GM.reset_index(drop=True)
     result = pd.concat([population_data,GM],ignore_index = True)
     result = result.append(NL,ignore_index = True)
-    result.index = result['Codering'].map(lambda x: int('1' + x[2:]))
-    result = result.rename_axis('codering')
+    #result.index = result['Codering'].map(lambda x: int('1' + x[2:]))
+    #result.rename({'Codering_3':'Codering'},inplace = True)
+    #result.drop('codering',inplace = True)
     return result
