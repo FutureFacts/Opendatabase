@@ -118,7 +118,7 @@ BeW.Codering = jong.Codering
 LEFT JOIN 
 CBS.{leeftijd_recent} as leeftijd
 ON
-BeW.Codering = leeftijd.Codering_3
+BeW.Codering = leeftijd.Codering
 LEFT JOIN 
 CBS.{sovo_recent} as SoVo
 ON
@@ -128,7 +128,15 @@ CBS.{wmo_recent} as WMO
 ON
 BeW.Codering = WMO.Codering
 GROUP BY trans.MMR_indeling;
-DROP TABLE CBS.combination;
+
+DROP TABLE CBS.{combination};
+
 ALTER TABLE CBS.combination_temp
-  RENAME TO CBS.combination
+  RENAME TO CBS.{combination};
+  
+CREATE INDEX idx_MMR_indeling_combination
+ON CBS.{combination} (MMR_indeling(100));
+
+CREATE INDEX idx_Gemeentenaam_combination
+ON CBS.{combination} (Gemeentenaam(100))
 

@@ -30,6 +30,8 @@ for name,(identifier,function) in cijfers_buurten_en_wijken.items():
     print(data.head(2))
     conn = engine.connect()
     data.to_sql(con= conn, name=name, if_exists='replace')    
+    conn.execute("CREATE INDEX idx_Codering \
+                  ON CBS.{} (Codering(10))".format(name)) 
     conn.close()
 
 ## CREATE THE MOST RECENT TABLE FOR BUURTEN EN WIJKEN

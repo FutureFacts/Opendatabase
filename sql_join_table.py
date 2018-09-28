@@ -33,6 +33,7 @@ with open('./sql_statements/join_tables') as file:
                                  wmo_recent = wmo_recent,
                                  sovo_recent = sovo_recent,
                                  leeftijd_recent = leeftijd_recent,
-                                 vertaal_recent = vertaal_recent)
+                                 vertaal_recent = vertaal_recent,
+                                 combination = 'combination')   
         print(conn.execute(command))
 
