@@ -17,8 +17,8 @@ def combine(original,older,source = {}):
     merged = unchanged.merge(
         older,
         how = 'left',
-        left_index=True,
-        right_index=True,
+        left_index =True,
+        right_index =True,
         suffixes = ('recent','older')
     )
     for column in list(wanted_columns):
@@ -31,6 +31,7 @@ def combine(original,older,source = {}):
                 source[column] = merged['Periodenolder'].iloc[0]
             except:
                 print(column, "doensn't exist in the older source")
+    merged['IndelingswijzigingWijkenEnBuurten'] = merged['IndelingswijzigingWijkenEnBuurtenolder']            
     merged = merged[wanted_columns]
     merged = merged.append(changed)
 
