@@ -57,7 +57,6 @@ def absolute_values_BeW(data):
                          'GemiddeldInkomenPerInwoner',
                          'k_40PersonenMetLaagsteInkomen',
                          'k_20PersonenMetHoogsteInkomen',
-                         'Actieven1575Jaar',
                          'k_40HuishoudensMetLaagsteInkomen',
                          'k_20HuishoudensMetHoogsteInkomen',
                          'HuishoudensMetEenLaagInkomen',

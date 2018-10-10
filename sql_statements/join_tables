@@ -6,12 +6,30 @@ trans.Gemeentenaam,
 trans.WijkenEnBuurten,
 trans.Codering,
 trans.soort_regio_nieuwe_indeling,
-SUM(BeW.AantalInwoners),
-SUM(BeW.HuishoudensTotaal),
-SUM(BeW.Oppervlakte),
+SUM(BeW.AantalInwoners) as AantalInwoners,
+SUM(BeW.HuishoudensTotaal) as HuishoudenTotaal,
+SUM(BeW.Eenpersoonshuishoudens) as Eenpersoonshuishoudens,
+SUM(BeW.HuishoudensZonderKinderen) as HuishoudensZonderKinderen,
+SUM(BeW.HuishoudensMetKinderen) HuishoudensMetKinderen,
+SUM(BeW.Oppervlakte) as Oppervlakte,
 SUM(BeW.SterfteTotaal) * 1000 / NULLIF(SUM(BeW.AantalInwoners),0) as SterfteRelatief,
 SUM(BeW.AantalInwoners) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as GemiddeldeHuishoudensgrootte ,
 SUM(BeW.AantalInwoners) / NULLIF(SUM(BeW.Oppervlakte),0) as Bevolkingsdichtheid,
+
+#Background
+SUM(WestersTotaal) as WestersTotaal,
+SUM(NietWestersTotaal) as NietWestersTotaal,
+SUM(Marokko) as Marokko,
+SUM(NederlandseAntillenEnAruba) as NederlandseAntillenEnAruba,
+SUM(Suriname) as Suriname,
+SUM(Turkije) as Turkije,
+SUM(OverigNietWesters) as OverigNietWesters,
+
+#burgerlijke staat
+SUM(Ongehuwd) as Ongehuwd,
+SUM(Gehuwd) as Gehuwd,
+SUM(Gescheiden) as Gescheiden,
+SUM(Verweduwd) as Verweduwd,
 
 #housing
 SUM(BeW.Totale_Woningwaarde) / NULLIF(SUM(BeW.Woningvoorraad),0) as GemiddeldeWoningwaarde  ,
@@ -28,6 +46,7 @@ SUM(BeW.BouwjaarVoor2000_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0)  as Percent
 SUM(BeW.BouwjaarVanaf2000_Totaal) / NULLIF(SUM(BeW.Woningvoorraad),0) as PercentageBouwjaarVanaf2000 ,
 
 #Inkomen
+SUM(BeW.AantalInkomensontvangers) as AantalInkomensontvangers,
 SUM(BeW.inkomen_totaal) / NULLIF(SUM(BeW.AantalInkomensontvangers),0) as GemiddeldInkomenPerInkomensontvanger ,
 SUM(BeW.inkomen_totaal) / NULLIF(SUM(BeW.AantalInwoners),0) as GemiddeldInkomenPerInwoner,
 SUM(BeW.Laagste_inkomen_k40_totaal) / NULLIF(SUM(BeW.AantalInkomensontvangers),0) as Laagste_inkomen_k40_percentage ,
@@ -37,6 +56,13 @@ SUM(BeW.Laagste_inkomen_k20_totaal_huishoudens) / NULLIF(SUM(BeW.HuishoudensTota
 SUM(BeW.Hoogste_inkomen_k20_totaal_huishoudens) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as Hoogste_inkomen_k40_percentage_huishoudens ,
 SUM(BeW.Huishoudens_met_laag_inkomen_totaal) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as Huishoudens_met_laag_inkomen_percentage,
 SUM(BeW.HuishoudensOnderOfRondSociaalminimum_totaal) / NULLIF(SUM(BeW.HuishoudensTotaal),0) as HuishoudensOnderOfRondSociaalminimum_percentage,
+SUM(BeW.Actieven1575Jaar *leeftijd.`15tm75`) / SUM(leeftijd.`15tm75`) as Actieven1575Jaar,
+
+# Uitkeringen
+SUM(PersonenPerSoortUitkeringBijstand) as PersonenPerSoortUitkeringBijstand,
+SUM(PersonenPerSoortUitkeringAO) as PersonenPerSoortUitkeringAO,
+SUM(PersonenPerSoortUitkeringWW) as PersonenPerSoortUitkeringWW,
+SUM(PersonenPerSoortUitkeringAOW) as PersonenPerSoortUitkeringAOW,
 
 #autos
 SUM(BeW.Personenautos_totaal) / NULLIF(SUM(BeW.Oppervlakte),0) as Personen_autos_per_km2 ,
@@ -96,16 +122,16 @@ SUM(SoVo.ClientenMetVoorzieningen_7) as ClientenMetVoorzieningen_7,
 SUM(SoVo.HuishoudensMetVoorzieningen_8) as HuishoudensMetVoorzieningen_8,
 
 ## WMO
-SUM(WMO.WmoClienten) as WmoClienten,
-SUM(WMO.WmoClientenPer1000Inwoners)/  NULLIF(SUM(leeftijd.totaal),0) * 1000 as WmoClientenPer1000Inwoners,
+SUM(WMO.Totaal) as WmoTotaal,
+SUM(WMO.Totaal)/  NULLIF(SUM(leeftijd.totaal),0) * 1000 as WmoTotaalPer1000Inwoners,
 SUM(WMO.`Zowel PGB als ZIN`) as Zowel_PGB_als_ZIN,
-SUM(WMO.`Zowel PGB als ZIN`)/ NULLIF(SUM(leeftijd.totaal),0) as Zowel_PGB_als_ZIN_per100Inwoners,
-SUM(WMO.`Uitsluitend Zorg in Natura (ZIN)`) as `Uitsluitend_Zorg_in)Natura_(ZIN)`,
+SUM(WMO.`Zowel PGB als ZIN`)/ NULLIF(SUM(leeftijd.totaal),0) * 1000 as Zowel_PGB_als_ZIN_per100Inwoners,
+SUM(WMO.`Uitsluitend Zorg in Natura (ZIN)`) as `Uitsluitend_Zorg_in_Natura_(ZIN)`,
 SUM(WMO.`Uitsluitend Zorg in Natura (ZIN)`) / NULLIF(SUM(leeftijd.totaal),0) * 1000 as `Uitsluitend_Zorg_in_Natura_(ZIN)_per100Inwoners`,
 SUM(WMO.`Uitsluitend PersoonsGebondenBudget (PGB)`) as `Uitsluitend_PersoonsGebondenBudget_(PGB)`,
-SUM(WMO.`Uitsluitend PersoonsGebondenBudget (PGB)`)/ NULLIF(SUM(leeftijd.totaal),0) * 1000 as `Uitsluitend_PersoonsGebondenBudget_(PGB)_per100Inwoners`,
-SUM(WMO.Totaal) as wmo_kosten_totaal,
-SUM(WMO.Totaal)/NULLIF(SUM(leeftijd.totaal),0)* 1000 as WMOTotaal_per100Inwoners
+SUM(WMO.`Uitsluitend PersoonsGebondenBudget (PGB)`)/ NULLIF(SUM(leeftijd.totaal),0) * 1000 as `Uitsluitend_PersoonsGebondenBudget_(PGB)_per100Inwoners`
+
+
 FROM
 CBS.BuurtenenWijken_most_recent as BeW
 INNER JOIN CBS.{vertaal_recent} as trans

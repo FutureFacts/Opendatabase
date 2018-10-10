@@ -32,5 +32,6 @@ cijfers_buurten_en_wijken = {'leeftijd_2015':('./age_data/age_data_2015.xlsx',
                              'wmo_2017':('83818NED',process_data_wmo),
                              'sociale_voorzieningen_2015':('83265NED',process_data_sociale_voorzieningen),
                              'sociale_voorzieningen_2016':('83619NED',process_data_sociale_voorzieningen),
-                             'sociale_voorzieningen_2017':('83817NED',process_data_sociale_voorzieningen),
-                             'gezondheids_monitor_2016':('83674NED',process_data_gezondheidsmonitor)}
+                             'sociale_voorzieningen_2017':('83817NED',process_data_sociale_voorzieningen)
+                           #  'gezondheids_monitor_2016':('83674NED',process_data_gezondheidsmonitor)
+                            }

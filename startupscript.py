@@ -8,7 +8,6 @@ from databronnen import cijfers_buurten_en_wijken
 
 BuurtenenWijken = {key:item for key,item in cijfers_buurten_en_wijken.items()
                    if 'BuurtenenWijken' in key}
-print(BuurtenenWijken)                   
 
 ## HERE WE CONNECT TO THE DATABASE
 HOST = database['host']
@@ -26,7 +25,6 @@ for name,item in BuurtenenWijken.items():
     vertaaltabel = data[['Gemeentenaam','WijkenEnBuurten','SoortRegio','Codering']]
     vertaaltabel['MMR_indeling'] = vertaaltabel['Codering']
     vertaaltabel['soort_regio_nieuwe_indeling'] = vertaaltabel['SoortRegio']
-    vertaaltabel[(vertaaltabel['Gemeentenaam'] == 'Terneuzen') & (vertaaltabel['SoortRegio'] == 'Wijk')]
     table_name = 'VERTAAL_' + name[-4:] 
     vertaaltabel.to_sql(con= conn, name=table_name,
                         if_exists='replace')
