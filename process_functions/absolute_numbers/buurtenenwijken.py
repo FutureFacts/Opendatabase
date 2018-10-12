@@ -62,7 +62,7 @@ def absolute_values_BeW(data):
                          'HuishoudensMetEenLaagInkomen',
                          'HuishOnderOfRondSociaalMinimum']
 
-    data['inkomen_totaal'] = data['GemiddeldInkomenPerInkomensontvanger'] * data['AantalInkomensontvangers'] / 100
+    data['inkomen_totaal'] = data['GemiddeldInkomenPerInkomensontvanger'] * data['AantalInkomensontvangers'] 
     data['Laagste_inkomen_k40_totaal'] = data['k_40PersonenMetLaagsteInkomen'] * data['AantalInkomensontvangers'] / 100
     data['Hoogste_inkomen_k20_totaal'] = data['k_20PersonenMetHoogsteInkomen'] * data['AantalInkomensontvangers'] / 100
     data['Hoogste_inkomen_k20_totaal_huishoudens'] = data['k_20HuishoudensMetHoogsteInkomen'] * data['HuishoudensTotaal'] / 100
