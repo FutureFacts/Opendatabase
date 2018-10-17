@@ -25,6 +25,8 @@ for name,item in BuurtenenWijken.items():
     vertaaltabel = data[['Gemeentenaam','WijkenEnBuurten','SoortRegio','Codering']]
     vertaaltabel['MMR_indeling'] = vertaaltabel['Codering']
     vertaaltabel['soort_regio_nieuwe_indeling'] = vertaaltabel['SoortRegio']
-    table_name = 'VERTAAL_' + name[-4:] 
-    vertaaltabel.to_sql(con= conn, name=table_name,
+    vertaaltabel['WijkenEnBuurten_nieuwe_indeling'] = \
+                            vertaaltabel['WijkenEnBuurten']
+    table_name = 'VERTAAL_' + name[-4:]
+    vertaaltabel.to_sql(con=conn, name=table_name,
                         if_exists='replace')

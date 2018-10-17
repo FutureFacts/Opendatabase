@@ -12,6 +12,11 @@ engine = sqlalchemy.create_engine(
         'mysql://{0}:{1}@{2}/{3}'.format(USER,PASSWORD,HOST,DB))
 
 conn = engine.connect()
+translation = {'Wijk': 'WK',
+               'Gemeente': 'GM',
+               'Buurt': 'BU'
+              }
+               
 
 walker = os.walk('./Vertaling_wijken/')
 next(walker)
@@ -25,14 +30,22 @@ for directory,_, files in walker:
 def update_dataframe(df,data):
     for index, row in data.iterrows():
         select = df['Codering'].map(lambda x: x.rstrip()) == row['Wijkcode']
+        type_wijk = translation[row['SoortRegio'].strip()] 
         gemeente = ' (' + df.loc[select].iloc[0]['Gemeentenaam'] + ')'
-        df.loc[select,['MMR_indeling','soort_regio_nieuwe_indeling']] = (row['MMR-wijk'] + gemeente ,row['SoortRegio'] )    
+        df.loc[select,['MMR_indeling',
+                       'soort_regio_nieuwe_indeling',
+                       'WijkenEnBuurten_nieuwe_indeling'
+                      ]
+              ] = (type_wijk + ' ' + row['MMR-wijk'] + gemeente ,
+                   row['SoortRegio'],
+                   row['MMR-wijk']
+                  )    
     return df
 
 for year in years.keys():
     table_name =  'VERTAAL_' + year
-    SQL_statement = "SELECT * FROM " + database['DB'] + '.' + table_name
-    df = pd.read_sql(SQL_statement, conn)
+    SQL_statement = "SELECT * FROM " + DB + '.' + table_name
+    df = pd.read_sql(SQL_statement,index_col='index',con=conn)
     for gemeente in years[year]:
         data = pd.read_excel(gemeente)
         df = update_dataframe(df,data)

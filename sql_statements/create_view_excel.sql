@@ -1,8 +1,10 @@
+DROP TABLE CBS.MMR_excel;
+CREATE TABLE CBS.MMR_excel AS
 SELECT
     combination.Gemeentenaam as Gemeente,
-    combination.MMR_indeling AS `CBS Wijk`,
+    combination.WijkenEnBuurten AS `CBS Wijk`,
     'TBD' as MMR_Wijk,
-    combination.Codering as Code,
+    combination.MMR_indeling as Code,
     0.0 as Factor,
 
 #    -- Inwoners naar leeftijd
@@ -115,11 +117,12 @@ SELECT
         IFNULL(combination.GecertificeerdeInstelling,0) + IFNULL(combination.MedischSpecialist,0) +
         IFNULL(combination.RechterOfficierVanJustitie,0) + IFNULL(combination.GeenVerwijzer,0) +
         IFNULL(combination.VerwijzerOnbekend,0)),0)
-    AS `Verwijzer_onbekend/Geen verwijzer`
+    AS `Verwijzer_onbekend/Geen verwijzer`,
 
  #   -- Jaartal
+    2018 as Jaar
     # !!!! STILL TO ADD combination.Perioden AS Jaar
 FROM CBS.combination 
-WHERE soort_regio_nieuwe_indeling ='Wijk'
+WHERE (combination.Codering LIKE 'W%' OR combination.Codering LIKE 'G%' OR combination.Codering LIKE 'N%');
 
        

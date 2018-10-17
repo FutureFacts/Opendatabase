@@ -3,7 +3,7 @@ AS SELECT
 ### This is all from buurten en Wijken
 trans.MMR_indeling,
 trans.Gemeentenaam, 
-trans.WijkenEnBuurten,
+trans.WijkenEnBuurten_nieuwe_indeling as WijkenEnBuurten,
 trans.Codering,
 trans.soort_regio_nieuwe_indeling,
 SUM(BeW.AantalInwoners) as AantalInwoners,
