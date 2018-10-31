@@ -39,7 +39,6 @@ def process_data_jongeren(CBS_codering,name):
             TypeJeugdzorg = row['VormenVanJeugdzorg']
         else:
             TypeJeugdzorg = row['TypeJeugdzorg']
-            
         if identifier in collecting:
             result = collecting[identifier]
             result[TypeJeugdzorg] = row['TotaalJongerenMetJeugdzorg_5']
@@ -47,10 +46,11 @@ def process_data_jongeren(CBS_codering,name):
             row[TypeJeugdzorg] = row['TotaalJongerenMetJeugdzorg_5']
             row['Gemeentenaam_1'] = row['Gemeentenaam_1'].strip()
             row['Wijken'] = row['Wijken'].strip()
-            collecting[identifier] = row            
+            collecting[identifier] = row
     df = pd.DataFrame.from_dict(collecting, orient='index', dtype=None)
     df.rename(columns = translator,inplace = True)
-    return df    
+    df.loc[df['Codering'].str.contains('NL01',regex=False),['Codering']] = 'NL00'
+    return df
 
 def process_data_wmo(CBS_codering,name):
     data = cbsodata.get_data(CBS_codering)
